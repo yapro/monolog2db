@@ -1,0 +1,34 @@
+{
+  "name": "yapro/monolog2db",
+  "type": "library",
+  "description": "Very useful extensions for Monolog",
+  "keywords":    ["monolog", "library", "php", "error", "debug", "monolog extension", "monolog plugin", "monolog utils", "logger", "log"],
+  "license": "proprietary",
+  "version": "1.0",
+  "authors": [
+    {
+      "name": "Lebedenko Nikolay",
+      "email": "totx@ya.ru",
+      "role": "Developer",
+      "homepage": "http://yapro.ru"
+    }
+  ],
+  "require": {
+    "php": ">=7.4",
+    "doctrine/dbal": "*",
+    "monolog/monolog": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "YaPro\\Monolog2db\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "YaPro\\Monolog2db\\Tests\\": "tests/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "*"
+  }
+}
