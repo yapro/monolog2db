@@ -13,6 +13,7 @@ MYSQL_DATABASE=database_name
 MYSQL_USERNAME=database_username
 MYSQL_PASSWORD=database_password
 LOG_FILE_FOR_UNEXPECTED_ERRORS=/tmp/php_unexpected_errors.log
+MYSQL_TABLE_OPTIONALLY=optionally
 ```
 
 Register the log handler
@@ -26,6 +27,7 @@ services:
             - '%env(MYSQL_USERNAME)%'
             - '%env(MYSQL_PASSWORD)%'
             - '%env(LOG_FILE_FOR_UNEXPECTED_ERRORS)%'
+            - '%env(MYSQL_TABLE_OPTIONALLY)%'
 ```
 
 Configure the monolog ( example from a file config/packages/prod/monolog.yaml )

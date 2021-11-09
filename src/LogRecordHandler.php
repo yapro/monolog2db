@@ -11,10 +11,9 @@ use Monolog\Logger;
 
 class LogRecordHandler extends AbstractProcessingHandler
 {
-    public const TABLE_NAME = 'system_log';
-
     private Connection $connection;
     private string $logFile;
+    private string $tableName;
 
     public function __construct(
         string $dbHost,
@@ -22,7 +21,8 @@ class LogRecordHandler extends AbstractProcessingHandler
         string $dbName,
         string $dbUserName,
         string $dbPassword,
-        string $logFileForUnexpectedErrors
+        string $logFileForUnexpectedErrors,
+        string $tableName = null
     ) {
         parent::__construct(Logger::NOTICE, true);
         $this->setFormatter(new LogRecordFormatter());
@@ -40,6 +40,7 @@ class LogRecordHandler extends AbstractProcessingHandler
             'driver' => 'pdo_mysql',
         ]);
         $this->logFile = $logFileForUnexpectedErrors;
+        $this->tableName = $tableName ?? 'system_log';
     }
 
     protected function write(array $record): void
