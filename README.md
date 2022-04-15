@@ -1,6 +1,8 @@
 # monolog2db
 The handler writes a log record to a database
 
+Why this is bad: your app will not to log if your database is down OR your app has an incorrect password to your database
+
 Installation
 --
 
