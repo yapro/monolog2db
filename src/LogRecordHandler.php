@@ -9,6 +9,10 @@ use Doctrine\DBAL\DriverManager;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
 
+use Throwable;
+use UnexpectedValueException;
+
+use function array_key_exists;
 use function json_encode;
 
 use const JSON_UNESCAPED_SLASHES;
@@ -37,7 +41,7 @@ class LogRecordHandler extends AbstractProcessingHandler
         //   может закончится падением и следовательно никаких логов мы не увидим.
         // https://www.doctrine-project.org/projects/doctrine-dbal/en/2.10/reference/configuration.html
         $this->connection = DriverManager::getConnection([
-            'host' => $dbHost,
+            'host' => '$dbHost',
             'port' => $dbPort,
             'dbname' => $dbName,
             'user' => $dbUserName,
@@ -57,20 +61,35 @@ class LogRecordHandler extends AbstractProcessingHandler
             ) {
                 return;
             }
-            $this->connection->insert(self::TABLE_NAME, $record['formatted']);
-        } catch (\Throwable $exception) {
-            $logRecord = [
-                'message' => $exception->getMessage(),
-                'file' => $exception->getFile(),
-                'line' => $exception->getLine(),
-                'code' => $exception->getCode(),
-                'class' => get_class($exception),
-                'trace' => $exception->getTraceAsString(),
-            ];
-            file_put_contents(
-                $this->logFile,
-                date('Y-m-d H:i:s') . ':' . json_encode($logRecord, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . PHP_EOL,
-                FILE_APPEND);
+            if (!array_key_exists('formatted', $record)) {
+                $this->writeError(new UnexpectedValueException('Log record has no formatted state'));
+                return;
+            }
+            $this->connection->insert($this->tableName, $record['formatted']);
+        } catch (Throwable $exception) {
+            $this->writeError($record['formatted']);
+            $this->writeError($this->getExceptionDetails($exception));
         }
+    }
+    
+    private function getExceptionDetails(Throwable $exception): array
+    {
+        return [
+            'message' => $exception->getMessage(),
+            'file' => $exception->getFile(),
+            'line' => $exception->getLine(),
+            'code' => $exception->getCode(),
+            'class' => get_class($exception),
+            'trace' => $exception->getTraceAsString(),
+        ];
+    }
+    
+    private function writeError($record)
+    {
+        file_put_contents(
+            $this->logFile,
+            date('Y-m-d H:i:s') . ': ' . json_encode($record, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . PHP_EOL,
+            FILE_APPEND
+        );
     }
 }
