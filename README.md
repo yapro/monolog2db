@@ -1,7 +1,9 @@
 # monolog2db
 The handler writes a log record to a database
 
-Why this is bad: your app will not to log if your database is down OR your app has an incorrect password to your database
+If your database is down OR your app has an incorrect password to your database:
+- LogRecordHandler will not to write to database
+- LogRecordHandler will to log write to LOG_FILE_FOR_UNEXPECTED_ERRORS=/your/file.log
 
 Installation
 --
@@ -14,8 +16,8 @@ MYSQL_PORT=3306
 MYSQL_DATABASE=database_name
 MYSQL_USERNAME=database_username
 MYSQL_PASSWORD=database_password
+MYSQL_TABLE_OPTIONALLY=system_log
 LOG_FILE_FOR_UNEXPECTED_ERRORS=php://stderr
-MYSQL_TABLE_OPTIONALLY=my_log_table
 ```
 
 Register the log handler:
