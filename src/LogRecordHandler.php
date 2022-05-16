@@ -52,7 +52,7 @@ class LogRecordHandler extends AbstractProcessingHandler
             ) {
                 return;
             }
-            $this->connection->insert(self::TABLE_NAME, $record['formatted']);
+            $this->connection->insert($this->tableName, $record['formatted']);
         } catch (\Throwable $exception) {
             $logRecord = [
                 'message' => $exception->getMessage(),
