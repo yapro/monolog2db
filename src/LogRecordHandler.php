@@ -9,6 +9,11 @@ use Doctrine\DBAL\DriverManager;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
 
+use function json_encode;
+
+use const JSON_UNESCAPED_SLASHES;
+use const JSON_UNESCAPED_UNICODE;
+
 class LogRecordHandler extends AbstractProcessingHandler
 {
     private Connection $connection;
@@ -52,7 +57,7 @@ class LogRecordHandler extends AbstractProcessingHandler
             ) {
                 return;
             }
-            $this->connection->insert($this->tableName, $record['formatted']);
+            $this->connection->insert(self::TABLE_NAME, $record['formatted']);
         } catch (\Throwable $exception) {
             $logRecord = [
                 'message' => $exception->getMessage(),
@@ -64,7 +69,7 @@ class LogRecordHandler extends AbstractProcessingHandler
             ];
             file_put_contents(
                 $this->logFile,
-                date('Y-m-d H:i:s') . ':' . print_r($logRecord, true) . PHP_EOL,
+                date('Y-m-d H:i:s') . ':' . json_encode($logRecord, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . PHP_EOL,
                 FILE_APPEND);
         }
     }

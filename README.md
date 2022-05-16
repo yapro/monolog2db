@@ -6,7 +6,7 @@ Why this is bad: your app will not to log if your database is down OR your app h
 Installation
 --
 
-Register the env variables
+Register the env variables:
 ```shell
 MYSQL_VERSION=8
 MYSQL_HOST=mysql
@@ -14,11 +14,11 @@ MYSQL_PORT=3306
 MYSQL_DATABASE=database_name
 MYSQL_USERNAME=database_username
 MYSQL_PASSWORD=database_password
-LOG_FILE_FOR_UNEXPECTED_ERRORS=/tmp/php_unexpected_errors.log
-MYSQL_TABLE_OPTIONALLY=optionally
+LOG_FILE_FOR_UNEXPECTED_ERRORS=php://stderr
+MYSQL_TABLE_OPTIONALLY=my_log_table
 ```
 
-Register the log handler
+Register the log handler:
 ```yaml
 services:
   YaPro\Monolog2db\LogRecordHandler:
