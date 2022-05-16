@@ -2,8 +2,8 @@
 The handler writes a log record to a database
 
 If your database is down OR your app has an incorrect password to your database:
-- LogRecordHandler will not to write to database
-- LogRecordHandler will to log write to LOG_FILE_FOR_UNEXPECTED_ERRORS=/your/file.log
+- LogRecordHandler will not write to your database
+- LogRecordHandler will write to LOG_FILE_FOR_UNEXPECTED_ERRORS=/your/file.log
 
 Installation
 --
