@@ -41,7 +41,7 @@ class LogRecordHandler extends AbstractProcessingHandler
         //   может закончится падением и следовательно никаких логов мы не увидим.
         // https://www.doctrine-project.org/projects/doctrine-dbal/en/2.10/reference/configuration.html
         $this->connection = DriverManager::getConnection([
-            'host' => '$dbHost',
+            'host' => $dbHost,
             'port' => $dbPort,
             'dbname' => $dbName,
             'user' => $dbUserName,
