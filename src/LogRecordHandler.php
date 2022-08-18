@@ -25,7 +25,7 @@ class LogRecordHandler extends AbstractProcessingHandler
     private string $dbName;
     private string $dbUserName;
     private string $dbPassword;
-    private Connection $connection;
+    private ?Connection $connection = null;
     private string $logFile;
     private string $tableName;
 
